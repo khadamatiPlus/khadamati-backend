@@ -1,0 +1,1114 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Swagger documentation",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/auth/authenticate": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Authentication - Login Using Mobile",
+                "description": "",
+                "operationId": "authenticate",
+                "parameters": [
+                    {
+                        "name": "Accept-Language",
+                        "in": "header",
+                        "description": "Set language parameter by RFC2616 <https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.4>",
+                        "schema": {
+                            "type": "string",
+                            "default": "en"
+                        }
+                    },
+                    {
+                        "name": "App-Version-Name",
+                        "in": "header",
+                        "description": "Set language parameter by RFC2616 <https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.4>",
+                        "schema": {
+                            "type": "string",
+                            "default": "hayat_delivery_merchant_app"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "pass authetication data",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "mobile_number",
+                                    "firebase_auth_token"
+                                ],
+                                "properties": {
+                                    "country_code": {
+                                        "type": "string"
+                                    },
+                                    "mobile_number": {
+                                        "type": "string"
+                                    },
+                                    "firebase_auth_token": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "400": {
+                        "description": "input validation errors"
+                    },
+                    "500": {
+                        "description": "internal server error"
+                    },
+                    "200": {
+                        "description": "success"
+                    }
+                }
+            }
+        },
+        "/api/auth/registerMerchant": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Register Merchant",
+                "description": "",
+                "operationId": "registerMerchant",
+                "parameters": [
+                    {
+                        "name": "Accept-Language",
+                        "in": "header",
+                        "description": "Set language parameter by RFC2616 <https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.4>",
+                        "schema": {
+                            "type": "string",
+                            "default": "en"
+                        }
+                    },
+                    {
+                        "name": "App-Version-Name",
+                        "in": "header",
+                        "description": "Set language parameter by RFC2616 <https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.4>",
+                        "schema": {
+                            "type": "string",
+                            "default": "hayat_delivery_merchant_app"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "pass authetication data in addition to merchant details",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "mobile_number",
+                                    "name",
+                                    "business_type_id",
+                                    "city_id",
+                                    "firebase_auth_token"
+                                ],
+                                "properties": {
+                                    "mobile_number": {
+                                        "type": "string"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "latitude": {
+                                        "type": "string"
+                                    },
+                                    "longitude": {
+                                        "type": "string"
+                                    },
+                                    "business_type_id": {
+                                        "type": "integer"
+                                    },
+                                    "city_id": {
+                                        "type": "integer"
+                                    },
+                                    "firebase_auth_token": {
+                                        "type": "string"
+                                    },
+                                    "profile_pic": {
+                                        "type": "file"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "400": {
+                        "description": "input validation errors"
+                    },
+                    "500": {
+                        "description": "internal server error"
+                    },
+                    "200": {
+                        "description": "success"
+                    }
+                }
+            }
+        },
+        "/api/auth/registerCaptain": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Register Captain",
+                "description": "",
+                "operationId": "registerCaptain",
+                "parameters": [
+                    {
+                        "name": "Accept-Language",
+                        "in": "header",
+                        "description": "Set language parameter by RFC2616 <https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.4>",
+                        "schema": {
+                            "type": "string",
+                            "default": "en"
+                        }
+                    },
+                    {
+                        "name": "App-Version-Name",
+                        "in": "header",
+                        "description": "Set language parameter by RFC2616 <https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.4>",
+                        "schema": {
+                            "type": "string",
+                            "default": "hayat_delivery_captain_app"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "pass authetication data in addition to captain details",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "mobile_number",
+                                    "name",
+                                    "vehicle_type_id",
+                                    "is_instant_delivery",
+                                    "profile_pic",
+                                    "driving_license_card",
+                                    "car_id_card",
+                                    "firebase_auth_token"
+                                ],
+                                "properties": {
+                                    "mobile_number": {
+                                        "type": "string"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "vehicle_type_id": {
+                                        "type": "integer"
+                                    },
+                                    "is_instant_delivery": {
+                                        "type": "boolean"
+                                    },
+                                    "firebase_auth_token": {
+                                        "type": "string"
+                                    },
+                                    "cities": {
+                                        "type": "string"
+                                    },
+                                    "profile_pic": {
+                                        "type": "file"
+                                    },
+                                    "driving_license_card": {
+                                        "type": "file"
+                                    },
+                                    "car_id_card": {
+                                        "type": "file"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "400": {
+                        "description": "input validation errors"
+                    },
+                    "500": {
+                        "description": "internal server error"
+                    },
+                    "200": {
+                        "description": "success"
+                    }
+                }
+            }
+        },
+        "/api/captain/update": {
+            "post": {
+                "tags": [
+                    "Captain"
+                ],
+                "summary": "Update Captain Details",
+                "description": "",
+                "operationId": "updateCaptain",
+                "parameters": [
+                    {
+                        "name": "Accept-Language",
+                        "in": "header",
+                        "description": "Set language parameter by RFC2616 <https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.4>",
+                        "schema": {
+                            "type": "string",
+                            "default": "en"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "pass authetication data in addition to captain details",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "personal_photo": {
+                                        "type": "file"
+                                    },
+                                    "profile_pic": {
+                                        "type": "file"
+                                    },
+                                    "driving_license_card": {
+                                        "type": "file"
+                                    },
+                                    "car_id_card": {
+                                        "type": "file"
+                                    },
+                                    "vehicle_type_id": {
+                                        "type": "integer"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "cities": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "400": {
+                        "description": "input validation errors"
+                    },
+                    "500": {
+                        "description": "internal server error"
+                    },
+                    "200": {
+                        "description": "success"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/captain/profile": {
+            "get": {
+                "tags": [
+                    "Captain"
+                ],
+                "summary": "get Captain Details",
+                "description": "",
+                "operationId": "getCaptain",
+                "parameters": [
+                    {
+                        "name": "Accept-Language",
+                        "in": "header",
+                        "description": "Set language parameter by RFC2616 <https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.4>",
+                        "schema": {
+                            "type": "string",
+                            "default": "en"
+                        }
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "input validation errors"
+                    },
+                    "500": {
+                        "description": "internal server error"
+                    },
+                    "200": {
+                        "description": "success"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/captain/delivery/order/list": {
+            "get": {
+                "tags": [
+                    "Delivery - Captain"
+                ],
+                "operationId": "listCaptainOrders",
+                "parameters": [
+                    {
+                        "name": "Accept-Language",
+                        "in": "header",
+                        "description": "Set language parameter by RFC2616 <https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.4>",
+                        "schema": {
+                            "type": "string",
+                            "default": "en"
+                        }
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "status to filter order by status",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "page for paging data",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    },
+                    {
+                        "name": "from_date",
+                        "in": "query",
+                        "description": "date range from",
+                        "required": false,
+                        "schema": {
+                            "type": "date"
+                        }
+                    },
+                    {
+                        "name": "to_date",
+                        "in": "query",
+                        "description": "date range to",
+                        "required": false,
+                        "schema": {
+                            "type": "date"
+                        }
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "input validation errors"
+                    },
+                    "500": {
+                        "description": "internal server error"
+                    },
+                    "200": {
+                        "description": "success"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/delivery/order/storeOrderAsMerchant": {
+            "post": {
+                "tags": [
+                    "Delivery - Merchant"
+                ],
+                "operationId": "storeOrderAsMerchant",
+                "parameters": [
+                    {
+                        "name": "Accept-Language",
+                        "in": "header",
+                        "description": "Set language parameter by RFC2616 <https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.4>",
+                        "schema": {
+                            "type": "string",
+                            "default": "en"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "delivery_destination",
+                                    "city_id",
+                                    "vehicle_type_id",
+                                    "latitude",
+                                    "longitude",
+                                    "is_instant_delivery",
+                                    "order_amount",
+                                    "delivery_amount",
+                                    "customer_phone"
+                                ],
+                                "properties": {
+                                    "city_id": {
+                                        "type": "integer"
+                                    },
+                                    "vehicle_type_id": {
+                                        "type": "integer"
+                                    },
+                                    "delivery_destination": {
+                                        "type": "string"
+                                    },
+                                    "notes": {
+                                        "type": "string"
+                                    },
+                                    "latitude": {
+                                        "type": "string"
+                                    },
+                                    "longitude": {
+                                        "type": "string"
+                                    },
+                                    "order_amount": {
+                                        "type": "string"
+                                    },
+                                    "delivery_amount": {
+                                        "type": "string"
+                                    },
+                                    "customer_phone": {
+                                        "type": "string"
+                                    },
+                                    "is_instant_delivery": {
+                                        "type": "boolean"
+                                    },
+                                    "latitude_to": {
+                                        "type": "string"
+                                    },
+                                    "longitude_to": {
+                                        "type": "string"
+                                    },
+                                    "voice_record": {
+                                        "type": "file"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "400": {
+                        "description": "input validation errors"
+                    },
+                    "500": {
+                        "description": "internal server error"
+                    },
+                    "200": {
+                        "description": "success"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/delivery/order/orderList": {
+            "get": {
+                "tags": [
+                    "Delivery - Merchant"
+                ],
+                "operationId": "listOrders",
+                "parameters": [
+                    {
+                        "name": "Accept-Language",
+                        "in": "header",
+                        "description": "Set language parameter by RFC2616 <https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.4>",
+                        "schema": {
+                            "type": "string",
+                            "default": "en"
+                        }
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "status to filter order by status",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "page for paging data",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "input validation errors"
+                    },
+                    "500": {
+                        "description": "internal server error"
+                    },
+                    "200": {
+                        "description": "success"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/delivery/order/show": {
+            "get": {
+                "tags": [
+                    "Hayat Delivery App"
+                ],
+                "operationId": "showOrder",
+                "parameters": [
+                    {
+                        "name": "Accept-Language",
+                        "in": "header",
+                        "description": "Set language parameter by RFC2616 <https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.4>",
+                        "schema": {
+                            "type": "string",
+                            "default": "en"
+                        }
+                    },
+                    {
+                        "name": "order_id",
+                        "in": "query",
+                        "description": "orderId to filter order by orderId",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "input validation errors"
+                    },
+                    "500": {
+                        "description": "internal server error"
+                    },
+                    "200": {
+                        "description": "success"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/lookups/getInformation": {
+            "get": {
+                "tags": [
+                    "Lookups"
+                ],
+                "summary": "Get Information",
+                "description": "",
+                "operationId": "getInformation",
+                "parameters": [
+                    {
+                        "name": "Accept-Language",
+                        "in": "header",
+                        "description": "Set language parameter by RFC2616 <https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.4>",
+                        "schema": {
+                            "type": "string",
+                            "default": "en"
+                        }
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "input validation errors"
+                    },
+                    "500": {
+                        "description": "internal server error"
+                    },
+                    "200": {
+                        "description": "success"
+                    }
+                }
+            }
+        },
+        "/api/lookups/getBusinessTypes": {
+            "get": {
+                "tags": [
+                    "Lookups"
+                ],
+                "summary": "Get Business Types",
+                "description": "",
+                "operationId": "getBusinessTypes",
+                "parameters": [
+                    {
+                        "name": "Accept-Language",
+                        "in": "header",
+                        "description": "Set language parameter by RFC2616 <https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.4>",
+                        "schema": {
+                            "type": "string",
+                            "default": "en"
+                        }
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "input validation errors"
+                    },
+                    "500": {
+                        "description": "internal server error"
+                    },
+                    "200": {
+                        "description": "success"
+                    }
+                }
+            }
+        },
+        "/api/lookups/getDeliveryFees": {
+            "get": {
+                "tags": [
+                    "Lookups"
+                ],
+                "summary": "Get Delivery Fees",
+                "description": "",
+                "operationId": "getDeliveryFees",
+                "parameters": [
+                    {
+                        "name": "Accept-Language",
+                        "in": "header",
+                        "description": "Set language parameter by RFC2616 <https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.4>",
+                        "schema": {
+                            "type": "string",
+                            "default": "en"
+                        }
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "input validation errors"
+                    },
+                    "500": {
+                        "description": "internal server error"
+                    },
+                    "200": {
+                        "description": "success"
+                    }
+                }
+            }
+        },
+        "/api/lookups/getCities": {
+            "get": {
+                "tags": [
+                    "Lookups"
+                ],
+                "summary": "Get Cities",
+                "description": "",
+                "operationId": "getCities",
+                "parameters": [
+                    {
+                        "name": "Accept-Language",
+                        "in": "header",
+                        "description": "Set language parameter by RFC2616 <https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.4>",
+                        "schema": {
+                            "type": "string",
+                            "default": "en"
+                        }
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "input validation errors"
+                    },
+                    "500": {
+                        "description": "internal server error"
+                    },
+                    "200": {
+                        "description": "success"
+                    }
+                }
+            }
+        },
+        "/api/lookups/getPageBySlug": {
+            "get": {
+                "tags": [
+                    "Lookups"
+                ],
+                "summary": "Get App pages by slug key (about-us|terms-conditions|privacy-policy)",
+                "description": "",
+                "operationId": "getPageBySlug",
+                "parameters": [
+                    {
+                        "name": "Accept-Language",
+                        "in": "header",
+                        "description": "Set language parameter by RFC2616 <https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.4>",
+                        "schema": {
+                            "type": "string",
+                            "default": "en"
+                        }
+                    },
+                    {
+                        "name": "slug",
+                        "in": "query",
+                        "description": "this is the page key",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "default": "terms-conditions"
+                        }
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "input validation errors"
+                    },
+                    "500": {
+                        "description": "internal server error"
+                    },
+                    "200": {
+                        "description": "success"
+                    }
+                }
+            }
+        },
+        "/api/lookups/getUserTypes": {
+            "get": {
+                "tags": [
+                    "Lookups"
+                ],
+                "summary": "Get User Types",
+                "description": "",
+                "operationId": "getUserTypes",
+                "parameters": [
+                    {
+                        "name": "Accept-Language",
+                        "in": "header",
+                        "description": "Set language parameter by RFC2616 <https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.4>",
+                        "schema": {
+                            "type": "string",
+                            "default": "en"
+                        }
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "input validation errors"
+                    },
+                    "500": {
+                        "description": "internal server error"
+                    },
+                    "200": {
+                        "description": "success"
+                    }
+                }
+            }
+        },
+        "/api/lookups/getVehicleTypes": {
+            "get": {
+                "tags": [
+                    "Lookups"
+                ],
+                "summary": "Get VehicleTypes",
+                "description": "",
+                "operationId": "getVehicleTypes",
+                "parameters": [
+                    {
+                        "name": "Accept-Language",
+                        "in": "header",
+                        "description": "Set language parameter by RFC2616 <https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.4>",
+                        "schema": {
+                            "type": "string",
+                            "default": "en"
+                        }
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "input validation errors"
+                    },
+                    "500": {
+                        "description": "internal server error"
+                    },
+                    "200": {
+                        "description": "success"
+                    }
+                }
+            }
+        },
+        "/api/merchant/update": {
+            "post": {
+                "tags": [
+                    "Merchant"
+                ],
+                "summary": "Update Merchant Details",
+                "description": "",
+                "operationId": "updateMerchant",
+                "parameters": [
+                    {
+                        "name": "Accept-Language",
+                        "in": "header",
+                        "description": "Set language parameter by RFC2616 <https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.4>",
+                        "schema": {
+                            "type": "string",
+                            "default": "en"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "pass authetication data in addition to merchant details",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "latitude": {
+                                        "type": "string"
+                                    },
+                                    "longitude": {
+                                        "type": "string"
+                                    },
+                                    "business_type_id": {
+                                        "type": "city_id"
+                                    },
+                                    "city_id": {
+                                        "type": "integer"
+                                    },
+                                    "profile_pic": {
+                                        "type": "file"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "400": {
+                        "description": "input validation errors"
+                    },
+                    "500": {
+                        "description": "internal server error"
+                    },
+                    "200": {
+                        "description": "success"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/merchant/profile": {
+            "get": {
+                "tags": [
+                    "Merchant"
+                ],
+                "summary": "get Merchant Details",
+                "description": "",
+                "operationId": "getMerchant",
+                "parameters": [
+                    {
+                        "name": "Accept-Language",
+                        "in": "header",
+                        "description": "Set language parameter by RFC2616 <https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.4>",
+                        "schema": {
+                            "type": "string",
+                            "default": "en"
+                        }
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "input validation errors"
+                    },
+                    "500": {
+                        "description": "internal server error"
+                    },
+                    "200": {
+                        "description": "success"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/notifications/getNotifications": {
+            "get": {
+                "tags": [
+                    "Hayat Delivery App"
+                ],
+                "summary": "Get Notifications",
+                "description": "",
+                "operationId": "getNotifications",
+                "parameters": [
+                    {
+                        "name": "Accept-Language",
+                        "in": "header",
+                        "description": "Set language parameter by RFC2616 <https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.4>",
+                        "schema": {
+                            "type": "string",
+                            "default": "en"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "page to paginate data",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "input validation errors"
+                    },
+                    "500": {
+                        "description": "internal server error"
+                    },
+                    "200": {
+                        "description": "success"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/merchant/storeRating": {
+            "post": {
+                "tags": [
+                    "Merchant"
+                ],
+                "summary": "Store Rating",
+                "description": "",
+                "operationId": "storeRating",
+                "parameters": [
+                    {
+                        "name": "Accept-Language",
+                        "in": "header",
+                        "description": "Set language parameter by RFC2616 <https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.4>",
+                        "schema": {
+                            "type": "string",
+                            "default": "en"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "pass authetication data in addition to merchant details",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "notes": {
+                                        "type": "string"
+                                    },
+                                    "captain_id": {
+                                        "type": "integer"
+                                    },
+                                    "rate": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "400": {
+                        "description": "input validation errors"
+                    },
+                    "500": {
+                        "description": "internal server error"
+                    },
+                    "200": {
+                        "description": "success"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/lookups/getSocial": {
+            "get": {
+                "tags": [
+                    "Lookups"
+                ],
+                "summary": "Get Social",
+                "description": "",
+                "operationId": "getSocial",
+                "parameters": [
+                    {
+                        "name": "Accept-Language",
+                        "in": "header",
+                        "description": "Set language parameter by RFC2616 <https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.4>",
+                        "schema": {
+                            "type": "string",
+                            "default": "en"
+                        }
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "input validation errors"
+                    },
+                    "500": {
+                        "description": "internal server error"
+                    },
+                    "200": {
+                        "description": "success"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "name": "bearerAuth",
+                "in": "header",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    }
+}
