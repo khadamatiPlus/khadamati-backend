@@ -25,12 +25,16 @@ class TagRequest extends FormRequest
                 return [
                     'name' => ['required', 'max:255'],
                     'name_ar' => ['required', 'max:255'],
+                    'parent_id' => 'nullable|exists:tags,id',
+
                 ];
             case self::METHOD_PATCH:
                 return [
                     'id' => ['required', 'exists:tags,id'],
                     'name' => ['required', 'max:255'],
                     'name_ar' => ['required', 'max:255'],
+                    'parent_id' => 'nullable|exists:tags,id',
+
                 ];
             case self::METHOD_DELETE:
             default:

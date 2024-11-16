@@ -9,6 +9,7 @@
         <thead>
         <tr>
             <th>{{ __('Name') }}</th>
+            <th>{{ __('Parent') }}</th>
             <th>{{ __('Actions') }}</th>
         </tr>
         </thead>
@@ -16,6 +17,7 @@
         @foreach($tags as $tag)
             <tr>
                 <td>{{ $tag->name }}</td>
+                <td>{{ $tag->parent->name??"" }}</td>
                 <td>
                     @if ($logged_in_user->hasAllAccess() || $logged_in_user->can('admin.lookups.tag.update'))
                         <x-utils.edit-button :href="route('admin.lookups.tag.edit', $tag)" />

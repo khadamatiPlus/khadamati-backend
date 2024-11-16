@@ -20,8 +20,14 @@ class CreateInformationTable extends Migration
             $table->string('second_phone_number')->nullable();
             $table->softDeletes();
             $table->timestamps();
-            $table->addCreatedBy();
-            $table->addUpdatedBy();
+            $table->unsignedBigInteger('created_by_id');
+            $table->unsignedBigInteger('updated_by_id');
+            $table->foreign('created_by_id')
+                ->references('id')->on('users')
+                ->onDelete('cascade');
+            $table->foreign('updated_by_id')
+                ->references('id')->on('users')
+                ->onDelete('cascade');
         });
     }
 

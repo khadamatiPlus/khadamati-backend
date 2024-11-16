@@ -14,7 +14,7 @@ class SocialTransformer
     public function transform(Social $social): array
     {
         return [
-            'id' => $social->id,
+//            'id' => $social->id,
 //            'x' => $information->x,
 //            'whatsapp' => $information->whatsapp,
 //            'youtube' => $information->youtube,

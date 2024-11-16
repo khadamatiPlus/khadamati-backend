@@ -18,19 +18,15 @@ class LoginApiController extends APIBaseController
      */
     protected $userService;
 
-    /**
-     * @var FirebaseIntegration $firebaseIntegration
-     */
-    protected $firebaseIntegration;
+
 
     /**
      * @param UserService $userService
      * @param FirebaseIntegration $firebaseIntegration
      */
-    public function __construct(UserService $userService, FirebaseIntegration $firebaseIntegration)
+    public function __construct(UserService $userService)
     {
         $this->userService = $userService;
-        $this->firebaseIntegration = $firebaseIntegration;
     }
 
     /**
@@ -91,14 +87,15 @@ class LoginApiController extends APIBaseController
 
         $country_code =$request->input('country_code')?? env('DEFAULT_COUNTRY_CODE','962');
         $fullNumber = $country_code.$request->input('mobile_number');
+        $password = $request->input('password');
 
         try{
-            if($verifyResult = $this->firebaseIntegration->verifyToken($request->input('firebase_auth_token'),$fullNumber)){
+//            if($verifyResult = $this->firebaseIntegration->verifyToken($request->input('firebase_auth_token'),$fullNumber)){
                 if(app()->environment(['local', 'testing'])){
-                    $verifyResult->verified = true;
+                    $verifyResult = true;
                 }
-                if($verifyResult->verified){
-                    $login = $this->userService->authenticateUserMobile($country_code,$request->input('mobile_number'),$request->header('App-Version-Name'));
+                if($verifyResult){
+                    $login = $this->userService->authenticateUserMobile($country_code,$request->input('mobile_number'),$request->header('App-Version-Name'),$password);
                     if(isset($login->show_not_merchant) && $login->show_not_merchant){
                         return $this->inputValidationErrorResponse(__('You cannot login using the merchant application'));
                     }
@@ -112,7 +109,7 @@ class LoginApiController extends APIBaseController
                         return $this->successResponse($login);
                     }
                 }
-            }
+//            }
             return $this->successResponse([
                 'completed' => false,
                 'access_token' => '',

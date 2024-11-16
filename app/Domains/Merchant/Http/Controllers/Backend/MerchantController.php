@@ -1,7 +1,9 @@
 <?php
 namespace App\Domains\Merchant\Http\Controllers\Backend;
+use App\Domains\Lookups\Services\AreaService;
 use App\Domains\Lookups\Services\BusinessTypeService;
 use App\Domains\Lookups\Services\CityService;
+use App\Domains\Lookups\Services\CountryService;
 use App\Domains\Merchant\Http\Requests\Backend\MerchantRequest;
 use App\Domains\Merchant\Models\Merchant;
 use App\Domains\Merchant\Services\MerchantService;
@@ -12,15 +14,19 @@ use Illuminate\Support\Facades\DB;
 class MerchantController extends Controller
 {
     private MerchantService $merchantService;
+    private CountryService $countryService;
     private CityService $cityService;
+    private AreaService $areaService;
 
     /**
      * @param MerchantService $merchantService
      */
-    public function __construct(MerchantService $merchantService,CityService $cityService)
+    public function __construct(MerchantService $merchantService,CountryService $countryService,CityService $cityService,AreaService $areaService )
     {
         $this->merchantService = $merchantService;
+        $this->countryService = $countryService;
         $this->cityService = $cityService;
+        $this->areaService = $areaService;
     }
     /**
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
@@ -34,9 +40,9 @@ class MerchantController extends Controller
      */
     public function create()
     {
-        $cities = $this->cityService->select(['id','name'])->get();
+        $countries = $this->countryService->select(['id','name'])->get();
         return view('backend.merchant.create')
-            ->withCities($cities);
+            ->withCountries($countries);
     }
     /**
      * @param merchantRequest $request
@@ -55,10 +61,15 @@ class MerchantController extends Controller
      */
     public function edit(Merchant $merchant)
     {
-        $cities = $this->cityService->select(['id','name'])->get();
+        $countries = $this->countryService->select(['id','name'])->get();
+        $cities = $this->cityService->where('country_id',$merchant->country_id)->select(['id','name'])->get();
+        $areas = $this->areaService->where('city_id',$merchant->city_id)->select(['id','name'])->get();
+
         return view('backend.merchant.edit')
             ->withMerchant($merchant)
-            ->withCities($cities);
+            ->withCountries($countries)
+            ->withCities($cities)
+            ->withAreas($areas);
     }
     /**
      * @param Merchant $item
@@ -102,5 +113,15 @@ class MerchantController extends Controller
     {
         $this->merchantService->updateStatus($request);
         return response()->json(true);
+    }
+    public function getCities($id){
+        $cities=DB::table('cities')->where('country_id',$id)
+            ->pluck('name','id');
+        return json_encode($cities);
+    }
+    public function getAreas($id){
+        $areas=DB::table('areas')->where('city_id',$id)
+            ->pluck('name','id');
+        return json_encode($areas);
     }
 }

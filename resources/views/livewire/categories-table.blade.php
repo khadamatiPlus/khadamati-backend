@@ -27,7 +27,7 @@
                 </td>
                 <td>{{ $category->name }}</td>
                 <td>{{ $category->summary }}</td>
-                <td>  {{ $category->category->name??'------------' }}</td>
+                <td>  {{ $category->parent->name??'------------' }}</td>
                 <td>
                     @if ($logged_in_user->hasAllAccess() || $logged_in_user->can('admin.lookups.category.update'))
                         <x-utils.edit-button :href="route('admin.lookups.category.edit', $category)" />

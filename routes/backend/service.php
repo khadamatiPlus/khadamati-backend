@@ -29,7 +29,13 @@ use App\Domains\Service\Http\Controllers\Backend\ServiceController;
                     $trail->parent('admin.service.index', $service)
                         ->push(__('Editing :entity', ['entity' => __('Service')]), route('admin.service.edit', $service));
                 });
-
+            Route::get('show', [ServiceController::class, 'show'])
+                ->name('show')
+                ->middleware('permission:admin.service.show')
+                ->breadcrumbs(function (Trail $trail, Service $service) {
+                    $trail->parent('admin.service.index', $service)
+                        ->push(__('View :entity', ['entity' => __('Service')]), route('admin.service.show', $service));
+                });
             Route::patch('/', [ServiceController::class, 'update'])
                 ->name('update')
                 ->middleware('permission:admin.service.update');
@@ -46,6 +52,8 @@ use App\Domains\Service\Http\Controllers\Backend\ServiceController;
                 $trail->parent('admin.dashboard')
                     ->push(__('Service Management'), route('admin.service.index'));
             });
+        Route::get('getCategorySubs/{id}',[ServiceController::class,'getCategorySubs']);
+
 
     });
     /**

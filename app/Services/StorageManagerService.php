@@ -13,7 +13,7 @@ class StorageManagerService
     /**
      * @var string[] $allowedImages
      */
-    public static $allowedImages = ['png', 'jpg', 'jpeg', 'gif', 'jpe'];
+    public static $allowedImages = ['png', 'jpg', 'jpeg', 'gif', 'jpe','webp'];
 
     /**
      * @var string[] $allowedVideos

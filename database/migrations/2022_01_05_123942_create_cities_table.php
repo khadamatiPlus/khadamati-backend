@@ -23,8 +23,14 @@ class CreateCitiesTable extends Migration
             $table->foreign('country_id')
                 ->references('id')->on('countries')
                 ->onDelete('cascade');
-            $table->addCreatedBy();
-            $table->addUpdatedBy();
+            $table->unsignedBigInteger('created_by_id');
+            $table->unsignedBigInteger('updated_by_id');
+            $table->foreign('created_by_id')
+                ->references('id')->on('users')
+                ->onDelete('cascade');
+            $table->foreign('updated_by_id')
+                ->references('id')->on('users')
+                ->onDelete('cascade');
         });
     }
 

@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Domains\Auth\Http\Requests\API;
+use App\Domains\Lookups\Models\Area;
+use App\Domains\Lookups\Models\City;
 use App\Enums\Core\ErrorTypes;
 use App\Http\Requests\JsonRequest;
 use App\Services\StorageManagerService;
@@ -39,13 +41,41 @@ class RegisterMerchantRequest extends JsonRequest
                 }),
                 'regex:/^7[789]\\d{7}$/'
             ],
+            'email' => [
+                'required','email',
+                Rule::unique('users')->where(function ($query) {
+                    return $query->whereNotNull('merchant_id');
+                })
+            ],
             'name' => ['required', 'max:350'],
-            'latitude' => ['nullable', 'max:350'],
-            'longitude' => ['nullable', 'max:350'],
-            'business_type_id' => ['required','exists:business_types,id'],
-            'city_id' => ['required','exists:cities,id'],
+            'country_id' => ['required', 'exists:countries,id'],
+            'city_id' => [
+                'required',
+                'exists:cities,id',
+                function ($attribute, $value, $fail) {
+                    // Check if the city belongs to the selected country
+                    if (!City::where('id', $value)->where('country_id', request('country_id'))->exists()) {
+                        $fail(__('The selected city does not belong to the chosen country.'));
+                    }
+                },
+            ],
+            'area_id' => [
+                'required',
+                'exists:areas,id',
+                function ($attribute, $value, $fail) {
+                    // Check if the area belongs to the selected city
+                    if (!Area::where('id', $value)->where('city_id', request('city_id'))->exists()) {
+                        $fail(__('The selected area does not belong to the chosen city.'));
+                    }
+                },
+            ],
+
+            'is_verified' => ['sometimes','in:0,1'],
             'profile_pic' => ['nullable', 'mimes:'.implode(',',StorageManagerService::$allowedImages)],
-            'firebase_auth_token' => ['required', 'string'],
+            'latitude' => ['required', 'max:350'],
+            'longitude' => ['required', 'max:350'],
+            'password' => ['required', 'confirmed'],
+//            'firebase_auth_token' => ['required', 'string'],
         ];
     }
 

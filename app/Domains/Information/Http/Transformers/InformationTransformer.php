@@ -14,7 +14,7 @@ class InformationTransformer
     public function transform(Information $information): array
     {
         return [
-            'id' => $information->id,
+//            'id' => $information->id,
             'email' => $information->email,
             'phone_number' => $information->phone_number,
             'second_phone_number' => $information->second_phone_number,

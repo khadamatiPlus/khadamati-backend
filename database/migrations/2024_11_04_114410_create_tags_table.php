@@ -15,6 +15,7 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('name_ar');
+            $table->foreignId('parent_id')->nullable()->constrained('tags')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
             $table->unsignedBigInteger('created_by_id');
@@ -25,6 +26,7 @@ return new class extends Migration
             $table->foreign('updated_by_id')
                 ->references('id')->on('users')
                 ->onDelete('cascade');
+
         });
     }
 

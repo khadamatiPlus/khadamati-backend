@@ -47,12 +47,22 @@ class MerchantRequest extends FormRequest
                             return $query->whereNotNull('merchant_id');
                         }),
                         'regex:/^7[789]\\d{7}$/'
-                    ],                    'name' => ['required', 'max:350'],
+                    ],
+                    'email' => [
+                        'required','email',
+                        Rule::unique('users')->where(function ($query) {
+                            return $query->whereNotNull('merchant_id');
+                        })
+                    ],
+                    'name' => ['required', 'max:350'],
+                    'country_id' => ['required','exists:countries,id'],
                     'city_id' => ['required','exists:cities,id'],
+                    'area_id' => ['required','exists:areas,id'],
                     'is_verified' => ['sometimes','in:0,1'],
                     'profile_pic' => ['nullable', 'mimes:'.implode(',',StorageManagerService::$allowedImages)],
                     'latitude' => ['required', 'max:350'],
                     'longitude' => ['required', 'max:350'],
+                    'password' => ['required', 'confirmed'],
 
                 ];
             case self::METHOD_PATCH:
@@ -60,11 +70,28 @@ class MerchantRequest extends FormRequest
                 return [
                     'id' => ['required', 'exists:merchants,id'],
                     'name' => ['required', 'max:350'],
+                    'country_id' => ['required','exists:countries,id'],
                     'city_id' => ['required','exists:cities,id'],
+                    'area_id' => ['required','exists:areas,id'],
                     'is_verified' => ['sometimes','in:0,1'],
                     'profile_pic' => ['nullable', 'mimes:'.implode(',',StorageManagerService::$allowedImages)],
                     'latitude' => ['required', 'max:350'],
                     'longitude' => ['required', 'max:350'],
+                    'email' => [
+                        'required',
+                        'email',
+                        Rule::unique('users')->ignore($this->owner_id)->where(function ($query) {
+                            return $query->whereNotNull('merchant_id');
+                        })
+                    ],
+                    'mobile_number' => [
+                        'required',
+                        Rule::unique('users')->ignore($this->owner_id)->where(function ($query) {
+                            return $query->whereNotNull('merchant_id');
+                        }),
+                        'regex:/^7[789]\\d{7}$/'
+                    ],
+                    'password' => ['nullable', 'confirmed'],
 
                 ];
             case self::METHOD_DELETE:

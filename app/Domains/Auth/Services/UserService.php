@@ -64,6 +64,7 @@ class UserService extends BaseService
         try {
             $user = $this->createUser($data);
         } catch (Exception $e) {
+
             DB::rollBack();
 
             throw new GeneralException(__('There was a problem creating your account.'));
@@ -345,9 +346,9 @@ class UserService extends BaseService
         ]);
     }
 
-    public function authenticateUserMobile($country_code,$mobile_number,$appVersionName)
+    public function authenticateUserMobile($country_code,$mobile_number,$appVersionName, $password)
     {
-        if($appVersionName =='hayat_delivery_merchant_app'){
+        if($appVersionName =='khadamati_merchant_app'){
             $user = $this->where('merchant_id',null,'!=')
                 ->where('mobile_number', $mobile_number)
                 ->first();
@@ -359,7 +360,7 @@ class UserService extends BaseService
         }
 
 
-        if($user != null) {
+        if($user != null && Hash::check($password, $user->password)) {
             //TODO check if web admin
             if(!$user->isActive()){
                 $user->tokens()->delete();
@@ -372,7 +373,7 @@ class UserService extends BaseService
 
             $resp = new \stdClass();
 
-            if($appVersionName =='hayat_delivery_merchant_app' &&$user->isMerchantAdmin()){
+            if($appVersionName =='khadamati_merchant_app' &&$user->isMerchantAdmin()){
                 $merchant=$user->merchant;
                 event(new UserLoggedIn($user));
                 $user->tokens()->delete();

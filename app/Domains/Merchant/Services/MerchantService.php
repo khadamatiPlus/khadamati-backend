@@ -60,11 +60,20 @@ class MerchantService extends BaseService
             $merchantAdmin = $this->userService->registerUser([
                 'type' => User::TYPE_USER,
                 'name' => $data['name'] ?? null,
+                'password' => $data['password'],
+                'email' => $data['email'] ?? null,
                 'mobile_number' => $data['mobile_number'],
                 'merchant_id' => $data['merchant_id'] ?? null,
                 'timezone' => $data['timezone'] ?? env('DEFAULT_TIMEZONE','Asia/Amman')
             ]);
-
+//            if(!empty($data['profile_pic']) && request()->hasFile('profile_pic')){
+//                try {
+//
+//                    $this->upload($data,'profile_pic');
+//                } catch (\Exception $e) {
+//                    throw $e;
+//                }
+//            }
             $merchantAdmin->syncRoles([2]);
 
             if(!auth()->check()){
@@ -125,18 +134,23 @@ class MerchantService extends BaseService
      */
     public function update($entity, array $data = [])
     {
-
         $data = array_filter($data);
         $merchant = $this->getById($entity);
          $user=User::query()->where('id',$merchant->profile_id)->firstOrFail();
-//        echo 'ss';exit();
+        if (isset($data['name'])){
+            $user->name = $data['name'];
+        }
+        if (isset($data['password'])){
+            $user->email = $data['password'];
+        }
+        if (isset($data['password'])){
+            $user->password = $data['password'];
+        }
+        $user->save();
         if(!empty($data['profile_pic']) && request()->hasFile('profile_pic')){
-//            echo 'ss';exit();
             try {
                 $this->storageManagerService->deletePublicFile($merchant->profile_pic,'merchants/profile_pics');
-
                 $this->upload($data,'profile_pic','merchants/profile_pic',$merchant->logo);
-
             } catch (\Exception $e) {
                 throw $e;
             }

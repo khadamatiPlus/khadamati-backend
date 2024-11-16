@@ -20,7 +20,7 @@
                 <input type="hidden" name="id" value="{{$city->id}}" />
 
                 <div class="form-group row">
-                    <label for="name" class="col-md-2 col-form-label">@lang('Name')</label>
+                    <label for="name" class="col-md-2 col-form-label">@lang('Name (EN)')</label>
 
                     <div class="col-md-10">
                         <input name="name" id="name" class="form-control" value="{{ old('name') ?? $city->name }}" required/>
@@ -28,7 +28,7 @@
                 </div><!--form-group-->
 
                 <div class="form-group row">
-                    <label for="name_ar" class="col-md-2 col-form-label">@lang('Arabic Name')</label>
+                    <label for="name_ar" class="col-md-2 col-form-label">@lang('Name (AR)')</label>
 
                     <div class="col-md-10">
                         <input name="name_ar" id="name_ar" class="form-control" value="{{ old('name_ar') ?? $city->name_ar }}" required/>

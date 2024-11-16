@@ -15,12 +15,10 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->string('title');
             $table->string('title_ar');
-            $table->string('mobile_number');
             $table->string('price');
-            $table->text('location');
-            $table->text('location_ar');
+            $table->string('new_price')->nullable();
             $table->longText('description');
-            $table->longText('description_ar');
+            $table->longText('description_ar')->nullable();
             $table->string('order')->nullable();
             $table->text('video')->nullable();
             $table->text('main_image')->nullable();
@@ -28,9 +26,6 @@ return new class extends Migration
             $table->unsignedBigInteger('category_id');
             $table->unsignedBigInteger('sub_category_id')->nullable();
             $table->unsignedBigInteger('merchant_id');
-            $table->unsignedBigInteger('country_id');
-            $table->unsignedBigInteger('city_id');
-            $table->unsignedBigInteger('area_id')->nullable();
             $table->softDeletes();
             $table->timestamps();
             $table->foreign('category_id')
@@ -41,15 +36,6 @@ return new class extends Migration
                 ->onDelete('cascade');
             $table->foreign('merchant_id')
                 ->references('id')->on('merchants')
-                ->onDelete('cascade');
-            $table->foreign('country_id')
-                ->references('id')->on('countries')
-                ->onDelete('cascade');
-            $table->foreign('city_id')
-                ->references('id')->on('cities')
-                ->onDelete('cascade');
-            $table->foreign('area_id')
-                ->references('id')->on('areas')
                 ->onDelete('cascade');
             $table->unsignedBigInteger('created_by_id');
             $table->unsignedBigInteger('updated_by_id');

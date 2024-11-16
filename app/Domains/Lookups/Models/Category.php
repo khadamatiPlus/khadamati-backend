@@ -20,7 +20,6 @@ use App\Models\BaseModel;
  * @property string $updated_at
  * @property string $deleted_at
  * @property User $user
- * @property Product[] $products
 
  */
 class Category extends BaseModel
@@ -44,16 +43,14 @@ class Category extends BaseModel
     {
         return $this->belongsTo(User::class, 'created_by_id');
     }
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function category(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function children()
     {
-        return $this->belongsTo(Category::class,'parent_id');
+        return $this->hasMany(Category::class, 'parent_id');
     }
 
-    public function products(): \Illuminate\Database\Eloquent\Relations\HasMany
+    // Relationship to get the parent tag
+    public function parent()
     {
-        return $this->hasMany(Product::class,'category_id');
+        return $this->belongsTo(Category::class, 'parent_id');
     }
 }

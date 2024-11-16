@@ -38,7 +38,8 @@ class MobileAuthenticateRequest extends JsonRequest
         return [
             'country_code' => ['nullable', 'string'],
             'mobile_number' => ['required'],
-            'firebase_auth_token' => ['required', 'string']
+            'password' => ['required'],
+//            'firebase_auth_token' => ['required', 'string']
         ];
     }
 

@@ -60,6 +60,8 @@ use App\Domains\Merchant\Http\Controllers\Backend\MerchantController;
                     ->push(__('Merchant Management'), route('admin.merchant.index'));
             });
         Route::get('updateStatusByMerchantId', [MerchantController::class, 'updateStatus'])->name('updateStatusByMerchantId');
+        Route::get('getCities/{id}',[MerchantController::class,'getCities']);
+        Route::get('getAreas/{id}',[MerchantController::class,'getAreas']);
     });
     /**
      * End Merchant Routes

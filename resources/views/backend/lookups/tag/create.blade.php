@@ -31,6 +31,17 @@
                     </div>
                 </div>
 
+                <div class="form-group row">
+                    <label for="parent_id" class="col-md-2 col-form-label" > {{__("Select Parent Tag (Optional):")}}</label>
+                    <div class="col-md-10">
+                    <select class="form-control" id="parent_id" name="parent_id" class="form-control">
+                        <option value="">{{__("No Parent Tag")}}</option>
+                        @foreach($tags as $tag)
+                            <option value="{{ $tag->id }}">{{ $tag->name }}</option>
+                        @endforeach
+                    </select>
+                    </div>
+                </div>
 
 
 

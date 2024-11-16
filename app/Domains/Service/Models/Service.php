@@ -7,6 +7,7 @@ use App\Domains\Lookups\Models\Area;
 use App\Domains\Lookups\Models\Category;
 use App\Domains\Lookups\Models\City;
 use App\Domains\Lookups\Models\Country;
+use App\Domains\Lookups\Models\Tag;
 use App\Domains\Merchant\Models\Merchant;
 use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -29,7 +30,7 @@ class Service extends BaseModel
     /**
      * @var array
      */
-    protected $fillable = ['title','title_ar','mobile_number','price','location','location_ar','description','description_ar','order','main_image','video','duration','category_id','sub_category_id','merchant_id','country_id','city_id','area_id', 'created_by_id', 'updated_by_id', 'name','latitude','business_type_id','longitude' ,'profile_pic', 'is_verified', 'created_at', 'updated_at', 'deleted_at','profile_id'];
+    protected $fillable = ['title','title_ar','mobile_number','price','new_price','','location','location_ar','description','description_ar','order','main_image','video','duration','category_id','sub_category_id','merchant_id','country_id','city_id','area_id', 'created_by_id', 'updated_by_id', 'is_verified', 'created_at', 'updated_at', 'deleted_at'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -76,34 +77,30 @@ class Service extends BaseModel
         return $this->belongsTo(Category::class,'sub_category_id');
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-//    public function orders(): \Illuminate\Database\Eloquent\Relations\HasMany
-//    {
-//        return $this->hasMany(Order::class);
-//    }
 
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function users(): \Illuminate\Database\Eloquent\Relations\HasMany
-    {
-        return $this->hasMany(User::class);
-    }    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
     public function createdById(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(User::class,"created_by_id");
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function profile(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function tags()
     {
-        return $this->belongsTo(User::class, 'profile_id');
+        return $this->belongsToMany(Tag::class, 'service_tag');
     }
+    // Relationship to get all images associated with a service
+    public function images()
+    {
+        return $this->hasMany(ServiceImage::class);
+    }
+    public function products()
+    {
+        return $this->hasMany(ServiceProduct::class);
+    }
+
+    // Get the main image of the service
+    public function mainImage()
+    {
+        return $this->hasOne(ServiceImage::class)->where('is_main', true);
+    }
+
 }

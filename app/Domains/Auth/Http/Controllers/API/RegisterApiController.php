@@ -6,7 +6,7 @@ use App\Domains\Auth\Services\UserService;
 use App\Domains\FirebaseIntegration\FirebaseIntegration;
 use App\Domains\Auth\Http\Requests\API\RegisterCaptainRequest;
 use App\Domains\Merchant\Services\MerchantService;
-use App\Domains\Captain\Services\CaptainService;
+use App\Domains\Customer\Services\CustomerService;
 use App\Http\Controllers\APIBaseController;
 use App\Domains\Auth\Http\Requests\API\RegisterMerchantRequest;
 
@@ -25,7 +25,7 @@ class RegisterApiController extends APIBaseController
 
     protected $customerService;
     /**
-     * @var CaptainService $captainService
+     * @var CustomerService $captainService
      */
     protected $captainService;
 
@@ -39,12 +39,14 @@ class RegisterApiController extends APIBaseController
      * @param MerchantService $merchantService
      * @param FirebaseIntegration $firebaseIntegration
      */
-    public function __construct(UserService $userService, MerchantService $merchantService,CaptainService $captainService, FirebaseIntegration $firebaseIntegration)
+    public function __construct(UserService $userService, MerchantService $merchantService,CustomerService $customerService,
+//                                FirebaseIntegration $firebaseIntegration
+    )
     {
         $this->userService = $userService;
         $this->merchantService = $merchantService;
-        $this->captainService = $captainService;
-        $this->firebaseIntegration = $firebaseIntegration;
+        $this->customerService = $customerService;
+//        $this->firebaseIntegration = $firebaseIntegration;
     }
 
     /**
@@ -106,29 +108,33 @@ class RegisterApiController extends APIBaseController
      */
     public function registerMerchant(RegisterMerchantRequest $request): \Illuminate\Http\JsonResponse
     {
-
         try{
             $country_code = env('DEFAULT_COUNTRY_CODE','962');
             $fullNumber = $country_code.$request->input('mobile_number');
+            $password = $request->input('password');
 
-            if($verifyResult = $this->firebaseIntegration->verifyToken($request->input('firebase_auth_token'),$fullNumber)){
+//            if($verifyResult = $this->firebaseIntegration->verifyToken($request->input('firebase_auth_token'),$fullNumber)){
                 if(app()->environment(['local', 'testing'])){
-                    $verifyResult->verified = true;
+//                    $verifyResult->verified = true;
+                    $verifyResult = true;
                 }
-                if($verifyResult->verified){
+                if($verifyResult){
                     $this->merchantService->register($request->validated());
-                    $login = $this->userService->authenticateUserMobile($country_code,$request->input('mobile_number'),$request->header('App-Version-Name'));
+
+                    $login = $this->userService->authenticateUserMobile($country_code,$request->input('mobile_number'),$request->header('App-Version-Name'),$password);
                     if($login && $login->active === true){
                         return $this->successResponse($login);
                     }
                 }
-            }
+//            }
             return $this->successResponse([
                 'completed' => false,
                 'access_token' => '',
                 'active' => false
             ]);
-        }
+//        }
+    }
+
         catch (\Exception $exception)
         {
             report($exception);

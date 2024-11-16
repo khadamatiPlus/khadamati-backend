@@ -29,7 +29,7 @@ class CategoryTable extends Component
         $categories = Category::query()
             ->where(function ($query) {
                 $query->where('name', 'like', '%' . $this->search . '%');
-                $query->where('summary', 'like', '%' . $this->search . '%');
+                $query->orWhere('summary', 'like', '%' . $this->search . '%');
             })
             ->paginate(10);
 

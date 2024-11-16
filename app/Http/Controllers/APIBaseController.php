@@ -31,10 +31,15 @@ class APIBaseController extends BaseController
      * @param array $responseHeaders
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function successResponse($data, array $responseHeaders = []): \Illuminate\Http\JsonResponse
+    protected function successResponse($data, string $message = 'Request successful', array $responseHeaders = []): \Illuminate\Http\JsonResponse
     {
-        return response()->json(['data' => $data],200, $responseHeaders, JSON_UNESCAPED_SLASHES);
+        return response()->json([
+            'success' => true,
+            'message' => $message,
+            'data' => $data
+        ], 200, $responseHeaders, JSON_UNESCAPED_SLASHES);
     }
+
 
     /**
      * 400 Bad Request – This means that client-side input fails validation.

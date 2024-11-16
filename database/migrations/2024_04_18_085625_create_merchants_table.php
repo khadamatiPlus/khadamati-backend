@@ -17,16 +17,20 @@ class CreateMerchantsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name',350);
             $table->text('profile_pic')->nullable();
+            $table->unsignedBigInteger('country_id')->nullable();
             $table->unsignedBigInteger('city_id')->nullable();
-            $table->unsignedBigInteger('business_type_id')->nullable();
+            $table->unsignedBigInteger('area_id')->nullable();
             $table->boolean('is_verified')->default(false);
             $table->string('latitude')->nullable();
             $table->string('longitude')->nullable();
             $table->foreign('city_id')
                 ->references('id')->on('cities')
                 ->onDelete('set null');
-            $table->foreign('business_type_id')
-                ->references('id')->on('business_types')
+            $table->foreign('country_id')
+                ->references('id')->on('countries')
+                ->onDelete('set null');
+            $table->foreign('area_id')
+                ->references('id')->on('areas')
                 ->onDelete('set null');
             $table->unsignedBigInteger('profile_id')->nullable();
             $table->foreign('profile_id')
@@ -34,8 +38,14 @@ class CreateMerchantsTable extends Migration
                 ->onDelete('set null');
             $table->timestamps();
             $table->softDeletes();
-            $table->addCreatedBy();
-            $table->addUpdatedBy();
+            $table->unsignedBigInteger('created_by_id');
+            $table->unsignedBigInteger('updated_by_id');
+            $table->foreign('created_by_id')
+                ->references('id')->on('users')
+                ->onDelete('cascade');
+            $table->foreign('updated_by_id')
+                ->references('id')->on('users')
+                ->onDelete('cascade');
         });
     }
 

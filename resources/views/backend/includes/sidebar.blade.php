@@ -264,6 +264,41 @@
             </li>
         @endif
         @if (
+        $logged_in_user->hasAllAccess() ||
+        (
+            $logged_in_user->can('admin.introduction.list') ||
+            $logged_in_user->can('admin.introduction.store')
+        )
+    )
+
+            <li class="c-sidebar-nav-title">@lang('Introductions')</li>
+            <li class="c-sidebar-nav-dropdown {{ activeClass(Route::is('admin.introduction.*'), 'c-open c-show') }}">
+                <x-utils.link
+                    href="#"
+                    icon="c-sidebar-nav-icon far fa-images"
+                    class="c-sidebar-nav-dropdown-toggle"
+                    :text="__('Introductions')"/>
+
+                <ul class="c-sidebar-nav-dropdown-items">
+                    @if (
+                        $logged_in_user->hasAllAccess() ||
+                        (
+                            $logged_in_user->can('admin.introduction.list') ||
+                            $logged_in_user->can('admin.introduction.store')
+                        )
+                    )
+                        <li class="c-sidebar-nav-item">
+                            <x-utils.link
+                                :href="route('admin.introduction.index')"
+                                class="c-sidebar-nav-link"
+                                :text="__('Introductions Management')"
+                                :active="activeClass(Route::is('admin.introduction.*'), 'c-active')"/>
+                        </li>
+                    @endif
+                </ul>
+            </li>
+        @endif
+        @if (
        $logged_in_user->hasAllAccess() ||
        (
            $logged_in_user->can('admin.notification.list') ||

@@ -5,8 +5,8 @@ use App\Domains\Lookups\Http\Controllers\API\PageApiController;
 use App\Domains\Auth\Http\Controllers\API\RegisterApiController;
 use App\Domains\Auth\Http\Controllers\API\LoginApiController;
 use App\Domains\Auth\Http\Controllers\API\UserManagementApiController;
-use App\Domains\Lookups\Http\Controllers\API\VehicleTypeApiController;
-use App\Domains\Lookups\Http\Controllers\API\BusinessTypeApiController;
+use App\Domains\Lookups\Http\Controllers\API\CategoryApiController;
+use App\Domains\Lookups\Http\Controllers\API\LabelApiController;
 use App\Http\Middleware\ForceJsonResponse;
 use App\Http\Middleware\ApiLocaleMiddleware;
 use App\Http\Middleware\CheckCaptainVerifiedMiddleware;
@@ -15,12 +15,15 @@ use App\Domains\Merchant\Http\Controllers\API\MerchantApiController;
 use App\Domains\Delivery\Http\Controllers\API\OrderApiController;
 use App\Http\Middleware\CheckMerchantVerifiedMiddleware;
 use App\Domains\Lookups\Http\Controllers\API\UserTypeApiController;
-use App\Domains\Lookups\Http\Controllers\API\DeliveryFeeApiController;
+use App\Domains\Lookups\Http\Controllers\API\TagApiController;
 use App\Domains\Rating\Http\Controllers\API\RatingApiController;
 use App\Domains\Notification\Http\Controllers\API\NotificationApiController;
 use App\Domains\Information\Http\Controllers\API\InformationApiController;
 use App\Domains\Social\Http\Controllers\API\SocialApiController;
 use App\Domains\Delivery\Http\Controllers\API\CaptainOrdersApiController;
+use App\Domains\Banner\Http\Controllers\API\BannerApiController;
+use App\Domains\Introduction\Http\Controllers\API\IntroductionApiController;
+use App\Domains\Service\Http\Controllers\API\ServiceApiController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -44,21 +47,22 @@ Route::group(['middleware' => ForceJsonResponse::class], function (){
         ], function(){
 
             Route::get('getCountries', [LocationApiController::class, 'getCountries']);
-
             Route::get('getCities', [LocationApiController::class, 'getCities']);
-            Route::get('getVehicleTypes', [VehicleTypeApiController::class, 'getVehicleTypes']);
-            Route::get('getBusinessTypes', [BusinessTypeApiController::class, 'getBusinessTypes']);
-            Route::get('getUserTypes', [UserTypeApiController::class, 'getUserTypes']);
-            Route::get('getDeliveryFees', [DeliveryFeeApiController::class, 'getDeliveryFees']);
+            Route::get('getAreas', [LocationApiController::class, 'getAreas']);
+            Route::get('getCategories', [CategoryApiController::class, 'getCategories']);
+
+            Route::get('getLabels', [LabelApiController::class, 'getLabels']);
+            Route::get('getTags', [TagApiController::class, 'getTags']);
             Route::get('getInformation', [InformationApiController::class, 'getInformation']);
             Route::get('getSocial', [SocialApiController::class, 'getSocial']);
 
             Route::get('getPageBySlug', [PageApiController::class, 'getPageBySlug']);
         });
-
+        Route::get('getBanners', [BannerApiController::class, 'getBanners']);
+        Route::get('getIntroductions', [IntroductionApiController::class, 'getIntroductions']);
 
         //Required Auth token routes
-        Route::group(['middleware' => 'authSanctum'], function (){
+        Route::group(['middleware' => 'auth:sanctum'], function (){
             Route::group([
                 'prefix' => 'notifications',
                 'as' => 'notifications.'
@@ -145,8 +149,15 @@ Route::group(['middleware' => ForceJsonResponse::class], function (){
                     Route::group(['middleware' => CheckMerchantVerifiedMiddleware::class], function () {
 
                         Route::post('update', [MerchantApiController::class, 'update']);
+                        Route::post('/updatePassword', [MerchantApiController::class, 'updatePassword']);
+                        Route::delete('/deleteMerchantAccount', [MerchantApiController::class, 'deleteMerchantAccount']);
                         Route::get('profile', [MerchantApiController::class, 'profile']);
-                        Route::post('storeRating', [RatingApiController::class, 'store']);
+                        Route::post('storeService', [ServiceApiController::class, 'storeService']);
+                        Route::put('updateService/{id}', [ServiceApiController::class, 'updateService']);
+                        Route::get('getServiceDetails/{id}', [ServiceApiController::class, 'getServiceDetails']);
+                        Route::delete('deleteService/{id}', [ServiceApiController::class, 'deleteService']);
+
+
                     });
             });
 
@@ -170,6 +181,9 @@ Route::group(['middleware' => ForceJsonResponse::class], function (){
         Route::group(['middleware' => 'optionalAuthSanctum'],function (){
 
         });
-
+        // Request OTP for password reset
+        Route::post('/request-reset-otp', [MerchantApiController::class, 'requestResetOtp']);
+        // Reset password using OTP
+        Route::post('/reset-password', [MerchantApiController::class, 'resetPassword']);
     });
 });

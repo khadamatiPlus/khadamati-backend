@@ -1,7 +1,10 @@
 <?php
 
 namespace App\Domains\Service\Services;
+use App\Domains\Lookups\Models\Category;
 use App\Domains\Service\Models\Service;
+use App\Domains\Service\Models\ServiceImage;
+use App\Domains\Service\Models\ServiceProduct;
 use App\Services\BaseService;
 use App\Services\StorageManagerService;
 use App\Exceptions\GeneralException;
@@ -46,6 +49,7 @@ class ServiceService extends BaseService
                 throw $e;
             }
         }
+        $data['title_ar']=$data['title'];
         if(!empty($data['video']) && request()->hasFile('video')){
             try {
                 $this->upload($data,'video');
@@ -53,8 +57,55 @@ class ServiceService extends BaseService
                 throw $e;
             }
         }
+//        echo $data['sub_category_id'];exit();
+        $category=Category::query()->where('id',$data['sub_category_id'])->first();
 
-        return parent::store($data);
+        $data['category_id']=$category->parent_id;
+        $service= parent::store($data);
+        $service->tags()->attach($data['tags']);
+
+        $images = request()->file('images');
+        $mainImageIndex = request()->input('main_image');
+
+        foreach ($images as $index => $image) {
+            // Store the image and get the file path
+            $filePath = $image->store('service_images', 'public');
+//            echo $filePath;exit();
+
+            // Create a new ServiceImage instance and save to database
+            ServiceImage::create([
+                'image' => $filePath,
+                'service_id' =>$service->id, // Make sure to get the service ID
+                'is_main' => $index == $mainImageIndex ? 1 : 0, // Set is_main based on the selected main image
+            ]);
+        }
+
+        // Handle product details
+        if (!empty($data['products'])) {
+            foreach ($data['products'] as $index => $productData) {
+
+                if (isset($productData['image']) && request()->hasFile("products.{$index}.image")) {
+
+                    $imageFile = request()->file("products.{$index}.image");
+                    $productImagePath = $imageFile->store('product_images', 'public');
+
+                } else {
+                    $productImagePath = null; // Handle cases where no image is uploaded
+                }
+
+                ServiceProduct::create([
+                    'service_id' => $service->id,
+                    'title' => $productData['title'],
+                    'price' => $productData['price'],
+                    'duration' => $productData['duration'],
+                    'description' => $productData['description'],
+                    'order' => $productData['order'],
+                    'image' => $productImagePath,
+                ]);
+            }
+        }
+
+        return $service ;
     }
 
     /**
@@ -84,6 +135,9 @@ class ServiceService extends BaseService
                 throw $e;
             }
         }
+
+
+
         return parent::update($entity, $data);
     }
 

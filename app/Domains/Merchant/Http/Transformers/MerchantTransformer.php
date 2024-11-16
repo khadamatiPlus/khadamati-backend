@@ -18,11 +18,15 @@ class MerchantTransformer
     {
         return [
             'id' => $merchant->id,
+            'mobile_number' => $merchant->profile->mobile_number,
+            'email' => $merchant->profile->email,
             'name' => $merchant->name,
-            'business_type_id' => $merchant->business_type_id,
-            'business_type_name' => $merchant->businessType->name,
             'city_id' => $merchant->city_id,
+            'country_id' => $merchant->country_id,
+            'area_id' => $merchant->area_id,
             'city_name' => $merchant->city->name,
+            'country_name' => $merchant->country->name,
+            'area_name' => $merchant->area->name,
             'longitude' => $merchant->longitude,
             'latitude' => $merchant->latitude,
             'profile_pic' => !empty($merchant->profile_pic)?storageBaseLink(StoragePaths::MERCHANT_PROFILE_PIC.$merchant->profile_pic):'',

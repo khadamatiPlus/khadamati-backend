@@ -10,10 +10,9 @@
         <tr>
             <th>{{ __('Name') }}</th>
             <th>{{ __('Phone Number') }}</th>
+            <th>{{ __('Country') }}</th>
             <th>{{ __('City') }}</th>
-
             <th>{{ __('Image') }}</th>
-            <th>{{ __('Category') }}</th>
             <th>{{ __('Approve') }}</th>
             <th>{{ __('Actions') }}</th>
         </tr>
@@ -29,17 +28,18 @@
                         @lang('Empty')
                     @endif
                 </td>
+                <td>  {{ $merchant->country->name??'------------' }}</td>
                 <td>
                     {{ $merchant->city->name }}
                 </td>
                 <td>
-                    @if(isset($merchant->image))
-                        <img class="zoom" src="{{storageBaseLink(\App\Enums\Core\StoragePaths::MERCHANT_PROFILE_PIC.$merchant->image??'')}}" width="100"  loading="lazy" />
+                    @if(isset($merchant->profile_pic))
+                        <img class="zoom" src="{{storageBaseLink(\App\Enums\Core\StoragePaths::MERCHANT_PROFILE_PIC.$merchant->profile_pic??'')}}" width="100"  loading="lazy" />
                     @else
                         ----------------
                     @endif
                 </td>
-                <td>  {{ $merchant->category->name??'------------' }}</td>
+
                 <td>
                     <input type="checkbox" name="is_verified" id="is_verified" data-toggle="toggle" data-size="sm" data-onstyle="primary" onchange="changeCheckBox({{$merchant->id}})" value="{{ old($merchant->is_verified) ?? ($merchant->is_verified == 0)?'no':'yes'}}" {{$merchant->is_verified == 1 ? 'checked' : ''}} >
                 </td>

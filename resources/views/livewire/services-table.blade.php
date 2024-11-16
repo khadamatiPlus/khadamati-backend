@@ -18,8 +18,11 @@
         @foreach($services as $service)
             <tr>
                 <td>
-                    @if(isset($service->image))
-                        <img src="{{storageBaseLink(\App\Enums\Core\StoragePaths::SERVICE_FILE.$service->image)}}" width="100"  loading="lazy" />
+                    @php
+                    $serviceMainImage=\App\Domains\Service\Models\ServiceImage::query()->where('service_id',$service->id)->where('is_main',1)->first();
+                    @endphp
+                    @if(isset($serviceMainImage->image))
+                        <img src="{{storageBaseLink($serviceMainImage->image)}}" width="100"  loading="lazy" />
                     @else
                         ----------------
                     @endif
@@ -33,6 +36,9 @@
                     @if ($logged_in_user->hasAllAccess() || $logged_in_user->can('admin.service.delete'))
                         <x-utils.delete-button :href="route('admin.service.delete', $service)" />
                     @endif
+                        @if ($logged_in_user->hasAllAccess() || $logged_in_user->can('admin.service.show'))
+                            <x-utils.view-button :href="route('admin.service.show', $service)" />
+                        @endif
                 </td>
 
         </tr>

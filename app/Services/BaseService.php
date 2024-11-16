@@ -303,6 +303,18 @@ abstract class BaseService
     }
 
     /**
+     * @param $column
+     * @return $this
+     */
+    public function whereNull($column)
+    {
+        $this->whereNulls[] = $column;
+
+        return $this;
+    }
+
+
+    /**
      * Add whereHas Clause to Query
      * @param $relation
      * @param $column
@@ -440,6 +452,7 @@ abstract class BaseService
         try {
             $new = $this->model::create($data);
         } catch (Exception $e) {
+
             DB::rollBack();
             throw new GeneralException(__('There was a problem creating the ').__($this->entityName));
         }

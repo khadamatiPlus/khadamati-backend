@@ -32,7 +32,8 @@ class TagController extends Controller
      */
     public function create()
     {
-        return view('backend.lookups.tag.create');
+        $tags = Tag::whereNull('parent_id')->get();
+        return view('backend.lookups.tag.create',compact('tags'));
     }
 
     /**
@@ -52,7 +53,8 @@ class TagController extends Controller
      */
     public function edit(Tag $tag)
     {
-        return view('backend.lookups.tag.edit')
+        $tags = Tag::whereNull('parent_id')->get();
+        return view('backend.lookups.tag.edit',compact('tags'))
             ->withTag($tag);
     }
 

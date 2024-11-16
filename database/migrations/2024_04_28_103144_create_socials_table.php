@@ -24,8 +24,14 @@ class CreateSocialsTable extends Migration
             $table->string('snapchat')->nullable();
             $table->timestamps();
             $table->softDeletes();
-            $table->addCreatedBy();
-            $table->addUpdatedBy();
+            $table->unsignedBigInteger('created_by_id');
+            $table->unsignedBigInteger('updated_by_id');
+            $table->foreign('created_by_id')
+                ->references('id')->on('users')
+                ->onDelete('cascade');
+            $table->foreign('updated_by_id')
+                ->references('id')->on('users')
+                ->onDelete('cascade');
         });
     }
 
