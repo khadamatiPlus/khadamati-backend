@@ -181,9 +181,9 @@ Route::group(['middleware' => ForceJsonResponse::class], function (){
         Route::group(['middleware' => 'optionalAuthSanctum'],function (){
 
         });
-        // Request OTP for password reset
         Route::post('/request-reset-otp', [MerchantApiController::class, 'requestResetOtp']);
-        // Reset password using OTP
+        Route::post('/confirm-otp', [MerchantApiController::class, 'confirmOtp']);
+
         Route::post('/reset-password', [MerchantApiController::class, 'resetPassword']);
     });
 });

@@ -39,7 +39,7 @@ class RegisterMerchantRequest extends JsonRequest
                 Rule::unique('users')->where(function ($query) {
                     return $query->whereNotNull('merchant_id');
                 }),
-                'regex:/^7[789]\\d{7}$/'
+
             ],
             'email' => [
                 'required','email',
@@ -74,7 +74,7 @@ class RegisterMerchantRequest extends JsonRequest
             'profile_pic' => ['nullable', 'mimes:'.implode(',',StorageManagerService::$allowedImages)],
             'latitude' => ['required', 'max:350'],
             'longitude' => ['required', 'max:350'],
-            'password' => ['required', 'confirmed'],
+            'password' => ['required'],
 //            'firebase_auth_token' => ['required', 'string'],
         ];
     }

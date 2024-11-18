@@ -15,6 +15,7 @@ class IntroductionTransformer
         return [
             'id' => $introduction->id,
              'title' =>  $introduction->title,
+             'description' =>  $introduction->description,
             'image' => !empty($introduction->image)?storageBaseLink(StoragePaths::INTRODUCTION_IMAGE.$introduction->image):'',
         ];
     }

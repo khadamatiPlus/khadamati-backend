@@ -349,9 +349,13 @@ class UserService extends BaseService
     public function authenticateUserMobile($country_code,$mobile_number,$appVersionName, $password)
     {
         if($appVersionName =='khadamati_merchant_app'){
-            $user = $this->where('merchant_id',null,'!=')
-                ->where('mobile_number', $mobile_number)
+            $normalizedMobileNumber = ltrim($mobile_number, '0');
+
+            // Query the user with the modified mobile number
+            $user = $this->where('merchant_id', null, '!=')
+                ->where('mobile_number', $normalizedMobileNumber)
                 ->first();
+
         }
         if($appVersionName =='hayat_delivery_captain_app'){
             $user = $this->where('captain_id',null,'!=')

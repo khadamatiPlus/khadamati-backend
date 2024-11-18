@@ -113,6 +113,7 @@ class RegisterApiController extends APIBaseController
             $fullNumber = $country_code.$request->input('mobile_number');
             $password = $request->input('password');
 
+
 //            if($verifyResult = $this->firebaseIntegration->verifyToken($request->input('firebase_auth_token'),$fullNumber)){
                 if(app()->environment(['local', 'testing'])){
 //                    $verifyResult->verified = true;

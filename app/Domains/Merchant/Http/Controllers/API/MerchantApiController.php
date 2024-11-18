@@ -115,20 +115,18 @@ class MerchantApiController extends APIBaseController
         ], 200);
     }
 
-    public function resetPassword(Request $request)
+
+    public function confirmOtp(Request $request)
     {
-        // Validate the request
         $request->validate([
             'mobile_number' => 'required|string',
             'otp' => 'required|string',
-            'new_password' => 'required|string|min:6|confirmed',
         ]);
 
         $mobile_number = $request->mobile_number;
         $otp = $request->otp;
-        $new_password = $request->new_password;
 
-        // Find the OTP record
+        // Check if OTP is valid
         $resetRecord = DB::table('password_resets')
             ->where('phone_number', $mobile_number)
             ->where('otp', $otp)
@@ -138,18 +136,37 @@ class MerchantApiController extends APIBaseController
             return response()->json(['error' => 'Invalid OTP.'], 400);
         }
 
-        // Update the user's password
+        // OTP is valid
+        return response()->json(['message' => 'OTP confirmed successfully.'], 200);
+    }
+
+
+
+
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'mobile_number' => 'required|string',
+            'new_password' => 'required|string|min:6',
+        ]);
+
+        $mobile_number = $request->mobile_number;
+        $new_password = $request->new_password;
+
+        // Find the user
         $user = User::where('mobile_number', $mobile_number)->first();
         if (!$user) {
             return response()->json(['error' => 'User not found.'], 404);
         }
 
+        // Update the user's password
         $user->password = Hash::make($new_password);
         $user->save();
 
-        // Delete OTP record
+        // Delete OTP record (if you want to clear OTPs after password reset)
         DB::table('password_resets')->where('phone_number', $mobile_number)->delete();
 
         return response()->json(['message' => 'Password reset successfully.'], 200);
     }
+
 }

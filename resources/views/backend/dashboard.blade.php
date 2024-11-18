@@ -61,7 +61,7 @@
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text-info text-uppercase mb-1">{{__("Orders")}}</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{$totalOfOrders}}</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{$totalOfOrders??0}}</div>
                                 </div>
                                 <div class="col-auto">
                                     <i class="fas fa-shopping-cart fa-3x text-gray-300"></i>
@@ -78,7 +78,7 @@
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text-info text-uppercase mb-1">{{__("Total Price")}}</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{$totalPriceOfOrders}} JD</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{$totalPriceOfOrders??0}} JD</div>
                                 </div>
                                 <div class="col-auto">
                                     <i class="fas fa-dollar-sign fa-3x text-gray-300"></i>
@@ -99,7 +99,7 @@
                                     <div class="text-xs font-weight-bold text-info text-uppercase mb-1">{{__("Requested Order")}}</div>
                                     <div class="row no-gutters align-items-center">
                                         <div class="col-auto">
-                                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{$totalOfRequestedOrders}}</div>
+                                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{$totalOfRequestedOrders??0}}</div>
                                         </div>
 
                                     </div>
@@ -122,7 +122,7 @@
                                     </div>
                                     <div class="row no-gutters align-items-center">
                                         <div class="col-auto">
-                                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{$totalOfAcceptedOrders}}</div>
+                                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{$totalOfAcceptedOrders??0}}</div>
                                         </div>
 
                                     </div>
@@ -143,7 +143,7 @@
                                     <div class="text-xs font-weight-bold text-info text-uppercase mb-1">{{("Finished Order")}}</div>
                                     <div class="row no-gutters align-items-center">
                                         <div class="col-auto">
-                                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{$totalOfDeliveredOrders}}</div>
+                                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{$totalOfDeliveredOrders??0}}</div>
                                         </div>
 
                                     </div>
@@ -164,7 +164,7 @@
                                     <div class="text-xs font-weight-bold text-info text-uppercase mb-1">{{("Cancelled Order")}}</div>
                                     <div class="row no-gutters align-items-center">
                                         <div class="col-auto">
-                                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{$totalOfCanceledOrders}}</div>
+                                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{$totalOfCanceledOrders??0}}</div>
                                         </div>
 
                                     </div>
