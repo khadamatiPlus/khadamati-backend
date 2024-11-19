@@ -14,7 +14,7 @@ class ServiceTransformer
     {
         return [
             'id' => $service->id,
-            'name' => $service->name,
+            'title' => $service->title,
             'description' => $service->description,
             'price' => $service->price,
             'tags' => $service->tags->pluck('name'), // Assuming tags are related via many-to-many

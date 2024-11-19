@@ -156,6 +156,7 @@ Route::group(['middleware' => ForceJsonResponse::class], function (){
                         Route::put('updateService/{id}', [ServiceApiController::class, 'updateService']);
                         Route::get('getServiceDetails/{id}', [ServiceApiController::class, 'getServiceDetails']);
                         Route::delete('deleteService/{id}', [ServiceApiController::class, 'deleteService']);
+                        Route::get('getServices', [ServiceApiController::class, 'getServices']);
 
 
                     });
@@ -182,6 +183,7 @@ Route::group(['middleware' => ForceJsonResponse::class], function (){
 
         });
         Route::post('/request-reset-otp', [MerchantApiController::class, 'requestResetOtp']);
+        Route::post('/check_mobile_number-otp', [MerchantApiController::class, 'requestMobileNumberOtp']);
         Route::post('/confirm-otp', [MerchantApiController::class, 'confirmOtp']);
 
         Route::post('/reset-password', [MerchantApiController::class, 'resetPassword']);

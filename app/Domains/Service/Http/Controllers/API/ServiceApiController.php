@@ -26,7 +26,7 @@ class ServiceApiController extends APIBaseController
     {
         // Validate incoming request
         $validated = $request->validate([
-            'merchant_id' => 'required|exists:merchants,id',
+//            'merchant_id' => 'required|exists:merchants,id',
             'sub_category_id' => 'required|exists:categories,id',
             'title' => 'required|string|max:255',
             'description' => 'required|string',
@@ -47,7 +47,7 @@ class ServiceApiController extends APIBaseController
 
         $category=Category::query()->where('id',$validated['sub_category_id'])->first();
         $service = Service::create([
-            'merchant_id' => $validated['merchant_id'],
+            'merchant_id' => auth()->user()->merchant_id,
             'sub_category_id' => $validated['sub_category_id'],
             'category_id' => $category->parent_id,
             'title' => $validated['title'],
@@ -106,7 +106,7 @@ class ServiceApiController extends APIBaseController
     {
         // Validate incoming request
         $validated = $request->validate([
-            'merchant_id' => 'nullable|exists:merchants,id',
+//            'merchant_id' => 'nullable|exists:merchants,id',
             'sub_category_id' => 'nullable|exists:categories,id',
             'title' => 'nullable|string|max:255',
             'description' => 'nullable|string',
@@ -130,7 +130,7 @@ class ServiceApiController extends APIBaseController
 
         // Update the service details if they are provided
         $service->update([
-            'merchant_id' => $validated['merchant_id'] ?? $service->merchant_id,
+            'merchant_id' => auth()->user()->merchant_id,
             'sub_category_id' => $validated['sub_category_id'] ?? $service->sub_category_id,
             'category_id' => Category::find($validated['sub_category_id'])->parent_id ?? $service->category_id,
             'title' => $validated['title'] ?? $service->title,
@@ -205,4 +205,43 @@ class ServiceApiController extends APIBaseController
             (new ServiceTransformer)->transform($service)
         );
     }
+
+    public function getServices(Request $request)
+    {
+        // Get the authenticated merchant_id
+        $merchant_id = auth()->user()->merchant_id;
+
+        // Base query to get services for the authenticated merchant
+        $query = Service::query()->where('merchant_id', $merchant_id);
+
+        // Apply optional search filters if provided
+        if ($request->has('search') && !empty($request->input('search'))) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
+            });
+        }
+
+        // Apply pagination
+        $services = $query->paginate(10); // Adjust the items per page as needed
+
+        // Transform the paginated data
+        $transformedServices = $services->getCollection()->map(function ($service) {
+            return (new ServiceTransformer)->transform($service);
+        });
+
+        // Return the response using successResponse
+        return $this->successResponse([
+            'data' => $transformedServices,
+            'pagination' => [
+                'total' => $services->total(),
+                'count' => $services->count(),
+                'per_page' => $services->perPage(),
+                'current_page' => $services->currentPage(),
+                'total_pages' => $services->lastPage(),
+            ],
+        ]);
+    }
+
 }

@@ -36,16 +36,25 @@ class RegisterMerchantRequest extends JsonRequest
         return [
             'mobile_number' => [
                 'required',
-                Rule::unique('users')->where(function ($query) {
-                    return $query->whereNotNull('merchant_id');
-                }),
+                function ($attribute, $value, $fail) {
+                    // Normalize the number by removing the '00' prefix if it exists
+                    $normalizedValue = preg_replace('/^00/', '', $value);
 
+                    // Check for uniqueness in the 'users' table
+                    $exists = \DB::table('users')
+                        ->whereNotNull('merchant_id')
+                        ->whereRaw('REPLACE(mobile_number, "00", "") = ?', [$normalizedValue])
+                        ->exists();
+
+                    if ($exists) {
+                        $fail('The mobile number has already been taken.');
+                    }
+                },
             ],
+
+
             'email' => [
-                'required','email',
-                Rule::unique('users')->where(function ($query) {
-                    return $query->whereNotNull('merchant_id');
-                })
+                'nullable','email',
             ],
             'name' => ['required', 'max:350'],
             'country_id' => ['required', 'exists:countries,id'],

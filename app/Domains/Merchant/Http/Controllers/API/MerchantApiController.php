@@ -96,11 +96,34 @@ class MerchantApiController extends APIBaseController
         $request->validate([
             'mobile_number' => 'required|string',
         ]);
-        $mobile_number = $request->mobile_number;
+        $mobile_number =  preg_replace('/^00/', '', $request->mobile_number);
         $user = User::where('mobile_number', $mobile_number)->first();
         if (!$user) {
             return response()->json(['error' => 'User with this phone number does not exist.'], 404);
         }
+//        $otp = Str::random(6);
+        $otp = '0000';
+        DB::table('password_resets')->updateOrInsert(
+            ['phone_number' => $mobile_number],
+            ['otp' => $otp, 'created_at' => now()]
+        );
+        return response()->json([
+            'status' => 'success',
+            'message' => 'OTP sent successfully.',
+            'timer'=>60
+
+        ], 200);
+    }
+    public function requestMobileNumberOtp(Request $request)
+    {
+        $request->validate([
+            'mobile_number' => 'required|string',
+        ]);
+        $mobile_number =  preg_replace('/^00/', '', $request->mobile_number);
+//        $user = User::where('mobile_number', $mobile_number)->first();
+//        if (!$user) {
+//            return response()->json(['error' => 'User with this phone number does not exist.'], 404);
+//        }
 //        $otp = Str::random(6);
         $otp = '0000';
         DB::table('password_resets')->updateOrInsert(
@@ -123,7 +146,8 @@ class MerchantApiController extends APIBaseController
             'otp' => 'required|string',
         ]);
 
-        $mobile_number = $request->mobile_number;
+        $mobile_number =  preg_replace('/^00/', '', $request->mobile_number);
+
         $otp = $request->otp;
 
         // Check if OTP is valid
@@ -150,7 +174,8 @@ class MerchantApiController extends APIBaseController
             'new_password' => 'required|string|min:6',
         ]);
 
-        $mobile_number = $request->mobile_number;
+        $mobile_number =  preg_replace('/^00/', '', $request->mobile_number);
+
         $new_password = $request->new_password;
 
         // Find the user
